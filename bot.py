@@ -12,15 +12,12 @@ client = discord.Client()
 with open('countries.txt', 'r') as f:
     countries_list = [line.strip() for line in f]
 
-#countries_list = [countries]
 
 temp_list = ["India", "China", "Pakistan"]
 
 countries_list = [item.lower() for item in countries_list]
 
-print (countries_list)
 
-#print (countries_list)
 
 @client.event
 async def on_ready():
@@ -30,6 +27,9 @@ async def on_ready():
 @client.event
 async def on_message(message):
     nickname  = (message.author.nick).lower()
+
+    if (message.author.bot):
+         return
 
     #isCountryAdded = [ele for ele in countries_list if(ele in nickname)] 
     isCountryAdded = any(ele in nickname for ele in countries_list) 
