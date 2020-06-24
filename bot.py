@@ -85,10 +85,10 @@ async def on_message(message):
         #print (difference)
 
         inSeconds = difference
-        if inSeconds > 120 and not isCountryAdded:
+        if inSeconds > 600 and not isCountryAdded:
             await message.channel.send(f"""{message.author.mention} please add your country to your nickname""")
             alerted_list.update( {message.author.nick : datetime.now()} )
-        elif inSeconds > 120 and isCountryAdded:
+        elif inSeconds > 600 and isCountryAdded:
             del alerted_list[message.author.nick] 
             await bot.process_commands(message)
             return
