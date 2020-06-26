@@ -16,7 +16,6 @@ TOKEN = os.getenv('DISCORD_TOKEN')
 
 bot = Bot(command_prefix='!')
 
-
 @bot.event
 async def on_ready():
     print(f'{bot.user} has connected to Discord!')
@@ -27,7 +26,6 @@ async def on_ready():
 async def on_message(message):
     await bot.process_commands(message)
 
-    await nicknamecheck.nicknameCheck(message)    
-    
+    await nicknamecheck.nicknameCheck(message)       
     
 bot.run(TOKEN)
