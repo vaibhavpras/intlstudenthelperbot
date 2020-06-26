@@ -6,13 +6,16 @@ from dotenv import load_dotenv
 
 from discord.ext.commands import Bot
 
+from discord.ext.commands import Bot
+from discord.ext.commands import has_permissions, MissingPermissions
+
 import nicknamecheck
+import rolereaction
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 
 bot = Bot(command_prefix='!')
-
 
 @bot.event
 async def on_ready():
