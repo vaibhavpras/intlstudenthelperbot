@@ -8,7 +8,6 @@ from datetime import datetime
 
 alerted_list = {}
 
-
 def checkKey(dict, key):       
     if key in dict.keys(): 
         return 1
