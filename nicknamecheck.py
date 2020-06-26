@@ -13,17 +13,6 @@ bot = Bot(command_prefix='!')
 
 alerted_list = {}
 
-@bot.command(name = "add_country", pass_context=True)
-@has_permissions(manage_roles=True)  
-async def add_country(ctx, arg):
-    with open('countries.txt', 'a') as f:
-        f.write(f"""\n{arg}""")
-    await ctx.channel.send(f"""Added {arg} to the list of countries""")
-
-@add_country.error
-async def add_country_error(ctx, error):
-    if isinstance(error, MissingPermissions):
-        await ctx.send("You don't have permission to do that!")
 
 def checkKey(dict, key):       
     if key in dict.keys(): 
