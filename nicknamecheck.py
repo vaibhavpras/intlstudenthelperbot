@@ -44,10 +44,10 @@ async def nicknameCheck(message):
             print (f""" Time since alerted: {difference}""")
 
             inSeconds = difference
-            if inSeconds > 60 and not isCountryAdded:
+            if inSeconds > 600 and not isCountryAdded:
                 await message.channel.send(f"""{message.author.mention} please add your country to your nickname""")
                 alerted_list.update( {message.author.nick : datetime.now()} )
-            elif inSeconds > 60 and isCountryAdded:
+            elif inSeconds > 600 and isCountryAdded:
                 del alerted_list[message.author.nick] 
                 return
             else:
@@ -73,10 +73,10 @@ async def nicknameCheck(message):
             print (f"""Time since alerted: {difference}""")
 
             inSeconds = difference
-            if inSeconds > 60 and not message.author.nick:
+            if inSeconds > 600 and not message.author.nick:
                 await message.channel.send(f"""{message.author.mention} please add a nickname which has your country and college name (if applicable).""")
                 alerted_list.update( {message.author.name : datetime.now()} )
-            elif inSeconds > 60 and message.author.nick:
+            elif inSeconds > 600 and message.author.nick:
                 del alerted_list[message.author.name]
                 nicknameCheck(message)             
                 return
