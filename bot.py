@@ -149,10 +149,10 @@ async def set_faq_channel_error(ctx, error):
 async def faq_enabled(ctx, arg):
     if arg.lower() == 'true':
         global is_faq_enabled
-        faq_enabled = True
+        is_faq_enabled = True
     elif arg.lower() == 'false':
         global is_faq_enabled
-        faq_enabled = False
+        is_faq_enabled = False
     else:
         await ctx.send('Plase type the command followed by True/False. DO NOT USE QUOTES')
     print(f"""Faq enabled: {arg}""")
