@@ -6,7 +6,6 @@ import corpus
 import help_response
 
 import discord
-from dotenv import load_dotenv
 
 from similarity import find_most_similar
 from corpus import CORPUS
@@ -209,4 +208,4 @@ async def on_raw_reaction_remove(payload):
 
 
   
-bot.run(TOKEN) 
+bot.run(os.environ['DISCORD_TOKEN']) 
