@@ -16,8 +16,6 @@ from discord.ext.commands import Bot
 from discord.ext import commands
 from discord.ext.commands import has_permissions, MissingPermissions
 
-load_dotenv()
-TOKEN = os.getenv('DISCORD_TOKEN')
 
 bot = Bot(command_prefix='!')
 
