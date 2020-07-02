@@ -3,6 +3,7 @@ import os
 import nicknamecheck
 import similarity
 import corpus
+import help_response
 
 import discord
 from dotenv import load_dotenv
@@ -23,6 +24,8 @@ bot = Bot(command_prefix='!')
 
 msg_id = 0
 roles_map = {}
+faq_channel = 0
+is_faq_enabled = True
 
 def isQuestion(text):
     question_words = ['What', 'When', 'How', 'Where', 'Who', '?']
@@ -38,7 +41,7 @@ def answer_question(text):
     final_answer = ''
     final_question = ''
 
-    if answer['score'] > 0.4:
+    if answer['score'] > 0.6:
         print(answer['score'])
         final_answer = answer['answer']
         final_question = answer['question']
@@ -57,15 +60,18 @@ async def on_message(message):
     await bot.process_commands(message)
     
     if (message.author.bot):
-        return     
+        return 
+
+    if (message.content.startswith('-')):
+        return    
 
     await nicknamecheck.nicknameCheck(message)   
 
-    if(isQuestion(message.content)):
+    if isQuestion(message.content) and int(message.channel.id) == int(faq_channel) and is_faq_enabled:
         (answer_text, question_text) = answer_question(message.content)
 
         if answer_text:
-            botmessage = await message.channel.send(f"""Do you want the answer to: {question_text} ?""")
+            botmessage = await message.channel.send(f"""Do you want the answer to: {question_text} """)
             
             await botmessage.add_reaction('\N{THUMBS UP SIGN}')
             await botmessage.add_reaction('\N{THUMBS DOWN SIGN}')
@@ -74,7 +80,7 @@ async def on_message(message):
                 return user == message.author and (str(reaction.emoji) == '\N{THUMBS UP SIGN}' or str(reaction.emoji) == '\N{THUMBS DOWN SIGN}')
 
             try:
-                reaction, user = await bot.wait_for('reaction_add', timeout=60.0, check=checkUp)
+                reaction, user = await bot.wait_for('reaction_add', timeout=30.0, check=checkUp)
             except asyncio.TimeoutError:
                 await botmessage.delete()
             else:
@@ -85,6 +91,7 @@ async def on_message(message):
 
                 elif reaction.emoji == '\N{THUMBS DOWN SIGN}':
                     await botmessage.delete()
+                    await message.channel.send("Sorry I could not find the answer to your question :( \nPlease ask your question in other channels")
 
 
 @bot.command(name = "add_country", pass_context=True)
@@ -110,7 +117,7 @@ async def add_role_msg(ctx, arg):
     await ctx.channel.send(f"""Assigned {arg} as role_message id""")
 
 @add_role_msg.error
-async def add_role_msg(ctx, error):
+async def add_role_msg_error(ctx, error):
     if isinstance(error, MissingPermissions):
         await ctx.send("You don't have permission to do that!")
 
@@ -124,6 +131,48 @@ async def add_role_emoji(ctx, arg1: discord.Emoji, arg2):
 
 @add_role_emoji.error
 async def add_role_emoji_error(ctx, error):
+    if isinstance(error, MissingPermissions):
+        await ctx.send("You don't have permission to do that!")
+
+@bot.command(name = "set_faq_channel", pass_context=True)
+@has_permissions(manage_roles=True)  
+async def set_faq_channel(ctx, arg):
+    global faq_channel
+    faq_channel = arg 
+    print(f"""Assigned {arg} as faq_channel id""")
+    await ctx.channel.send(f"""Assigned {arg} as faq_channel id""")
+
+@set_faq_channel.error
+async def set_faq_channel_error(ctx, error):
+    if isinstance(error, MissingPermissions):
+        await ctx.send("You don't have permission to do that!")
+
+@bot.command(name = "faq_enabled", pass_context=True)
+@has_permissions(manage_roles=True)  
+async def faq_enabled(ctx, arg):
+    if arg.lower() == 'true':
+        global is_faq_enabled
+        faq_enabled = True
+    elif arg.lower() == 'false':
+        global is_faq_enabled
+        faq_enabled = False
+    else:
+        await ctx.send('Plase type the command followed by True/False. DO NOT USE QUOTES')
+    print(f"""Faq enabled: {arg}""")
+    await ctx.channel.send(f"""Faq enabled: {arg}""")
+
+@faq_enabled.error
+async def faq_enabled_error(ctx, error):
+    if isinstance(error, MissingPermissions):
+        await ctx.send("You don't have permission to do that!")
+
+@bot.command(name = "adminhelp", pass_context=True)
+@has_permissions(manage_roles=True)  
+async def adminhelp(ctx):
+    await ctx.channel.send(help_response.halp)
+
+@adminhelp.error
+async def adminhelp(ctx, error):
     if isinstance(error, MissingPermissions):
         await ctx.send("You don't have permission to do that!")
 

@@ -45,7 +45,7 @@ async def nicknameCheck(message):
 
             inSeconds = difference
             if inSeconds > 600 and not isCountryAdded:
-                await message.channel.send(f"""{message.author.mention} please add your country to your nickname""")
+                await message.channel.send(f"""{message.author.mention} please add your country to your nickname. \n*(ping a mod for assistance)*""")
                 alerted_list.update( {message.author.nick : datetime.now()} )
             elif inSeconds > 600 and isCountryAdded:
                 del alerted_list[message.author.nick] 
@@ -55,7 +55,7 @@ async def nicknameCheck(message):
 
         else:
             if not isCountryAdded:
-                await message.channel.send(f"""{message.author.mention} please add your country to your nickname""")
+                await message.channel.send(f"""{message.author.mention} please add your country to your nickname. \n*(ping a mod for assistance)*""")
                 alerted_list.update( {message.author.nick : datetime.now()} )
                 return
 
@@ -74,7 +74,7 @@ async def nicknameCheck(message):
 
             inSeconds = difference
             if inSeconds > 600 and not message.author.nick:
-                await message.channel.send(f"""{message.author.mention} please add a nickname which has your country and college name (if applicable).""")
+                await message.channel.send(f"""{message.author.mention} please add a nickname which has your country and college name (if applicable). \n*(ping a mod for assistance)*""")
                 alerted_list.update( {message.author.name : datetime.now()} )
             elif inSeconds > 600 and message.author.nick:
                 del alerted_list[message.author.name]
@@ -85,6 +85,6 @@ async def nicknameCheck(message):
 
         else:
             if not message.author.nick:
-                await message.channel.send(f"""{message.author.mention} please add a nickname which has your country and college name (if applicable).""")
+                await message.channel.send(f"""{message.author.mention} please add a nickname which has your country and college name (if applicable). \n*(Please ping a mod for assistance)*""")
                 alerted_list.update( {message.author.name : datetime.now()} )
                 return
