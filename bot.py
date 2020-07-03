@@ -147,11 +147,10 @@ async def set_faq_channel_error(ctx, error):
 @bot.command(name = "faq_enabled", pass_context=True)
 @has_permissions(manage_roles=True)  
 async def faq_enabled(ctx, arg):
+    global is_faq_enabled
     if arg.lower() == 'true':
-        global is_faq_enabled
         is_faq_enabled = True
     elif arg.lower() == 'false':
-        global is_faq_enabled
         is_faq_enabled = False
     else:
         await ctx.send('Plase type the command followed by True/False. DO NOT USE QUOTES')
